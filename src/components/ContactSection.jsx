@@ -143,13 +143,15 @@ export default function ContactSection() {
               </div>
             </div>
             <div className="w-1/2 h-[2px] bg-[#033D54] my-6" />
-            <p className="text-sm text-[#FF9B00] font-medium">Our Socials</p>
-            <div className="flex gap-4 mt-3">
-              <FaTiktok className="text-xl cursor-pointer hover:text-[#033D54]" />
-              <FaInstagram className="text-xl cursor-pointer hover:text-[#033D54]" />
-              <FaFacebookF className="text-xl cursor-pointer hover:text-[#033D54]" />
-              <FaLinkedinIn className="text-xl cursor-pointer hover:text-[#033D54]" />
-            </div>
+            {/* Socials */}
+<p className="text-sm text-[#FF9B00] font-medium text-center md:text-left">Our Socials</p>
+<div className="flex gap-4 mt-3 justify-center md:justify-start">
+  <FaTiktok className="text-xl cursor-pointer hover:text-[#033D54]" />
+  <FaInstagram className="text-xl cursor-pointer hover:text-[#033D54]" />
+  <FaFacebookF className="text-xl cursor-pointer hover:text-[#033D54]" />
+  <FaLinkedinIn className="text-xl cursor-pointer hover:text-[#033D54]" />
+</div>
+
           </div>
         </div>
 
