@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { FaPhoneAlt, FaTelegramPlane, FaTiktok, FaInstagram, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import {
+  FaPhoneAlt,
+  FaTelegramPlane,
+  FaTiktok,
+  FaInstagram,
+  FaFacebookF,
+  FaLinkedinIn,
+} from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
 export default function ContactSection() {
@@ -10,6 +17,7 @@ export default function ContactSection() {
     email: '',
     message: '',
   });
+  const [formErrors, setFormErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [entryId, setEntryId] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -24,13 +32,56 @@ export default function ContactSection() {
     }
   }, [success, errorMsg]);
 
-  const handleChange = (e) =>
+ const validate = () => {
+  const errors = {};
+
+  // Name
+  if (!formData.name.trim()) {
+    errors.name = 'Name is required.';
+  } else if (!/^[a-zA-Z\s'-]+$/.test(formData.name)) {
+    errors.name = 'Please enter a valid name using only letters.';
+  }
+
+  // Phone
+  if (!formData.phone.trim()) {
+    errors.phone = 'Phone number is required.';
+  } else if (!/^\d{7,15}$/.test(formData.phone)) {
+    errors.phone = 'Please enter a valid phone number.';
+  }
+
+  // Email
+  if (!formData.email.trim()) {
+    errors.email = 'Email is required.';
+  } else if (
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+  ) {
+    errors.email = 'Please enter a valid email address.';
+  }
+
+  // Message
+  if (!formData.message.trim()) {
+    errors.message = 'Message is required.';
+  }
+
+  return errors;
+};
+
+
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormErrors({ ...formErrors, [e.target.name]: '' }); 
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccess(false);
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
     setErrorMsg('');
+    setSuccess(false);
 
     const { data, error } = await supabase.from('nsda').insert([formData]).select();
 
@@ -46,9 +97,8 @@ export default function ContactSection() {
   return (
     <section className="min-h-screen bg-[#FAF7F4] px-4 py-10 md:py-20 flex flex-col items-center justify-center">
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-10">
-        {/* LEFT: Title, Paragraph, Form (mobile), Contact Info */}
+        {/* LEFT */}
         <div className="md:w-1/2 flex flex-col justify-start">
-          {/* Title + Description */}
           <h2 className="text-3xl md:text-4xl font-bold text-[#025176] leading-tight">
             Become Part of <br /> Something Great
           </h2>
@@ -57,10 +107,11 @@ export default function ContactSection() {
             Let’s collaborate, innovate, and build something truly impactful together.
           </p>
 
-          {/* Mobile Form Only */}
+          {/* Mobile Form */}
           <div className="block md:hidden mt-8 bg-[#E4B340] p-6 rounded-lg">
             <FormBlock
               formData={formData}
+              formErrors={formErrors}
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               success={success}
@@ -70,7 +121,6 @@ export default function ContactSection() {
 
           {/* Contact Info */}
           <div className="mt-10">
-            {/* Email */}
             <div className="mt-4 flex items-start gap-3">
               <MdEmail className="text-xl text-[#033D54]" />
               <div>
@@ -78,8 +128,6 @@ export default function ContactSection() {
                 <p className="text-sm text-gray-800">examplea@gmail.com</p>
               </div>
             </div>
-
-            {/* Phone */}
             <div className="mt-4 flex items-start gap-3">
               <FaPhoneAlt className="text-sm mt-1 text-[#033D54]" />
               <div>
@@ -87,8 +135,6 @@ export default function ContactSection() {
                 <p className="text-sm text-gray-800">+251 594 791 9764</p>
               </div>
             </div>
-
-            {/* Telegram */}
             <div className="mt-4 flex items-start gap-3">
               <FaTelegramPlane className="text-xl text-[#033D54]" />
               <div>
@@ -96,11 +142,7 @@ export default function ContactSection() {
                 <p className="text-sm text-gray-800">NSDA/t.me</p>
               </div>
             </div>
-
-            {/* Line above socials */}
             <div className="w-1/2 h-[2px] bg-[#033D54] my-6" />
-
-            {/* Socials */}
             <p className="text-sm text-[#FF9B00] font-medium">Our Socials</p>
             <div className="flex gap-4 mt-3">
               <FaTiktok className="text-xl cursor-pointer hover:text-[#033D54]" />
@@ -111,10 +153,11 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* RIGHT (Desktop Only Form) */}
+        {/* RIGHT (Desktop Form) */}
         <div className="hidden md:block md:w-1/2 bg-[#E4B340] p-6 md:p-10 rounded-lg">
           <FormBlock
             formData={formData}
+            formErrors={formErrors}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             success={success}
@@ -126,11 +169,10 @@ export default function ContactSection() {
   );
 }
 
-// ✅ Extracted Form Block Component
-function FormBlock({ formData, handleChange, handleSubmit, success, errorMsg }) {
+// ✅ Reusable Form Component with Validation
+function FormBlock({ formData, formErrors, handleChange, handleSubmit, success, errorMsg }) {
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      {/* Name & Phone */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex flex-col w-full">
           <label className="text-sm font-bold text-[#033D54]">Name</label>
@@ -141,6 +183,7 @@ function FormBlock({ formData, handleChange, handleSubmit, success, errorMsg }) 
             type="text"
             className="mt-1 p-2 rounded-md bg-[#F4D891] outline-none"
           />
+          {formErrors.name && <p className="text-sm text-red-600">{formErrors.name}</p>}
         </div>
         <div className="flex flex-col w-full">
           <label className="text-sm font-bold text-[#033D54]">Phone</label>
@@ -151,10 +194,9 @@ function FormBlock({ formData, handleChange, handleSubmit, success, errorMsg }) 
             type="text"
             className="mt-1 p-2 rounded-md bg-[#F4D891] outline-none"
           />
+          {formErrors.phone && <p className="text-sm text-red-600">{formErrors.phone}</p>}
         </div>
       </div>
-
-      {/* Email */}
       <div className="flex flex-col">
         <label className="text-sm font-bold text-[#033D54]">Email</label>
         <input
@@ -164,9 +206,8 @@ function FormBlock({ formData, handleChange, handleSubmit, success, errorMsg }) 
           type="email"
           className="mt-1 p-2 rounded-md bg-[#F4D891] outline-none"
         />
+        {formErrors.email && <p className="text-sm text-red-600">{formErrors.email}</p>}
       </div>
-
-      {/* Message */}
       <div className="flex flex-col">
         <label className="text-sm font-bold text-[#033D54]">Message</label>
         <textarea
@@ -176,17 +217,14 @@ function FormBlock({ formData, handleChange, handleSubmit, success, errorMsg }) 
           rows={4}
           className="mt-1 p-2 rounded-md bg-[#F4D891] outline-none"
         ></textarea>
+        {formErrors.message && <p className="text-sm text-red-600">{formErrors.message}</p>}
       </div>
-
-      {/* Submit Button */}
       <button
         type="submit"
         className="w-fit px-5 py-2 mt-2 text-white bg-[#033D54] rounded-md text-sm font-medium hover:bg-[#025176]"
       >
         Get in Touch
       </button>
-
-      {/* Success or Error */}
       {success && (
         <div className="mt-4 p-3 rounded-md bg-green-100 text-green-800 font-semibold flex items-center gap-2">
           ✅ Message sent!
