@@ -7,7 +7,7 @@ import {
   Twitter,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
@@ -69,7 +69,7 @@ export default function Navbar() {
           </a>
           <Link 
             to="/teams" 
-            className={`${isActive('/teams')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}
+            className={`${isActive('#teams')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}
           >
             Teams
           </Link>
@@ -94,8 +94,8 @@ export default function Navbar() {
             Blogs
           </a>
           <a 
-            href="#contact" 
-            onClick={(e) => handleSectionClick('contact', e)}
+            href="#ContactSection" 
+            onClick={(e) => handleSectionClick('ContactSection', e)}
             className="text-[#023665] font-medium hover:text-blue-700 px-3 py-2 transition-colors cursor-pointer"
           >
             Contact
@@ -180,8 +180,8 @@ export default function Navbar() {
               Blogs
             </a>
             <a 
-              href="#contact" 
-              onClick={(e) => handleSectionClick('contact', e)}
+              href="#ContactSection" 
+              onClick={(e) => handleSectionClick('ContactSection', e)}
               className="block px-3 py-2 rounded-md text-base font-medium text-[#023665] hover:bg-gray-50 hover:text-blue-700 cursor-pointer"
             >
               Contact
