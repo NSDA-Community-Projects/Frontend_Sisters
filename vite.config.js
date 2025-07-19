@@ -1,19 +1,19 @@
-// vite.config.js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcssNesting from 'tailwindcss/nesting'
-import tailwindcss from 'tailwindcss'
-import autoprefixer from 'autoprefixer'
+const { defineConfig } = require('vite');
+const react = require('@vitejs/plugin-react');
+const path = require('path');
 
-export default defineConfig({
+module.exports = defineConfig({
   plugins: [react()],
-  css: {
-    postcss: {
-      plugins: [
-        tailwindcssNesting(),
-        tailwindcss(),
-        autoprefixer(),
-      ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
   },
-})
+  css: {
+    postcss: './postcss.config.js',
+  },
+  server: {
+    port: 3000,
+    open: true,
+  },
+});

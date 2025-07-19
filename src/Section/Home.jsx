@@ -1,7 +1,31 @@
-
 import { ArrowRight, Users, BookOpen, Heart, Headphones } from "lucide-react"
+import { Link } from "react-router-dom"
+import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 
 export default function Home() {
+  const location = useLocation()
+
+  // Handle hash-based navigation when the component mounts or location changes
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash.substring(1)
+      if (hash) {
+        const element = document.getElementById(hash)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    }
+
+    // Handle initial load
+    handleHashNavigation()
+
+    // Handle back/forward navigation
+    window.addEventListener('popstate', handleHashNavigation)
+    return () => window.removeEventListener('popstate', handleHashNavigation)
+  }, [location])
+
   return (
     <section
       id="home"
@@ -40,13 +64,14 @@ export default function Home() {
         </div>
 
         {/* CTA Button */}
-        <button
-  className="text-[#023665] px-8 py-3 rounded-full font-medium border border-[#023665] bg-transparent hover:bg-[#023665] hover:text-white transition-colors inline-flex items-center gap-2"
->
-  Become part of Najm
-  <ArrowRight className="w-4 h-4" />
-</button>
-
+        <Link to="/join">
+          <button
+            className="text-[#023665] px-8 py-3 rounded-full font-medium border border-[#023665] bg-transparent hover:bg-[#023665] hover:text-white transition-colors inline-flex items-center gap-2"
+          >
+            Become part of Najm
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </Link>
 
       </div>
       
