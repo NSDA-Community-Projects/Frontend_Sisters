@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { FaPhoneAlt, FaTelegramPlane, FaTiktok, FaInstagram, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPhoneAlt, FaTelegramPlane, FaTiktok } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
-export default function ContactSection() {
+// Accept 'id' as a prop here
+export default function ContactSection({ id }) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -32,9 +33,11 @@ export default function ContactSection() {
     setSuccess(false);
     setErrorMsg('');
 
+    // Ensure supabase is correctly configured and 'nsda' table exists
     const { data, error } = await supabase.from('nsda').insert([formData]).select();
 
     if (error) {
+      console.error("Supabase insert error:", error); // Log the actual error for debugging
       setErrorMsg('❌ Something went wrong. Please try again later.');
     } else {
       setSuccess(true);
@@ -44,7 +47,8 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="min-h-screen bg-[#FAF7F4] px-4 py-10 md:py-20 flex flex-col items-center justify-center">
+    // Apply the 'id' prop to the outermost section element
+    <section id={id} className="min-h-screen bg-[#FAF7F4] px-2 py-5 md:py-10 flex flex-col items-center justify-center">
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-10">
         {/* LEFT: Title, Paragraph, Form (mobile), Contact Info */}
         <div className="md:w-1/2 flex flex-col justify-start">
