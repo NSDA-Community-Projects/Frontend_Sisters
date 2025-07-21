@@ -1,13 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
+import OrganizationLayout from "./Section/Building";
 import ContactSection from './Section/ContactSection';
 import EventSection from './Section/EventPage';
 import Features from "./Section/Features";
 import FeaturesSection from "./Section/FeaturesSection";
 import Home from "./Section/Home";
+import { Teams } from "./Section/Teams";
 import About from "./Section/about";
 import Navbar from "./Section/navbar";
 import { Projects } from "./pages/Projects";
-import { Teams } from "./pages/Teams";
 
 export default function App() {
   return (
@@ -18,9 +19,10 @@ export default function App() {
           <Route path="/" element={
             <>
               <Home />
-              {/* <Homes /> */}
+              
               <Features />
               <FeaturesSection />
+              <OrganizationLayout />
               <About />
               <Teams />
               <EventSection />

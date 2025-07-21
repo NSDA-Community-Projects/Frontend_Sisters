@@ -44,7 +44,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="min-h-screen bg-[#FAF7F4] px-4 py-10 md:py-20 flex flex-col items-center justify-center">
+    <section className="min-h-screen bg-[#FAF7F4] px-4 py-10 md:py-20 flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full max-w-7xl flex flex-col md:flex-row gap-10">
         {/* LEFT: Title, Paragraph, Form (mobile), Contact Info */}
         <div className="md:w-1/2 flex flex-col justify-start">
