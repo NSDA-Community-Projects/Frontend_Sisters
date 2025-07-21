@@ -1,7 +1,6 @@
-import { ArrowRight, Users, BookOpen, Heart, Headphones } from "lucide-react"
-import { Link } from "react-router-dom"
+import { ArrowRight } from "lucide-react"
 import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 export default function Home() {
   const location = useLocation()
