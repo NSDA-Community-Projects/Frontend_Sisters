@@ -36,7 +36,7 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-  <section className="bg-white py-20 px-4">
+  <section className="bg-white py-20 px-4 overflow-hidden">
   <div className="max-w-6xl mx-auto text-center">
     <h2 className="text-3xl sm:text-4xl font-bold text-[#023665] mb-2">
       What We're Building

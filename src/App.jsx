@@ -22,6 +22,7 @@ export default function App() {
               <Home />
               <Features />
               <FeaturesSection />
+              <OrganizationLayout />
               <About />
               {/* Teams and UpcomingProjects will have their own routes,
                   but can also be included here if you want them to appear
