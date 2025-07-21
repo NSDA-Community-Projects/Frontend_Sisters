@@ -1,6 +1,36 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://cwjnqynonaddkacwyxxc.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3am5xeW5vbmFkZGthY3d5eHhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NDgyMjYsImV4cCI6MjA2NzIyNDIyNn0.INwhzhI4L-rmOT81zRQ2N0TbHXWtH0G8VNLh1o5FAHw'
+// Mock Supabase client that won't make any actual API calls
+const mockSupabase = {
+  from: () => ({
+    select: () => ({
+      data: [],
+      error: null,
+      status: 200,
+      statusText: 'OK'
+    }),
+    insert: () => ({
+      data: [],
+      error: null,
+      status: 201,
+      statusText: 'Created'
+    }),
+    update: () => ({
+      data: [],
+      error: null,
+      status: 200,
+      statusText: 'OK'
+    }),
+    delete: () => ({
+      data: [],
+      error: null,
+      status: 200,
+      statusText: 'OK'
+    })
+  }),
+  // Add other methods as needed by your components
+};
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Export the mock Supabase client
+export const supabase = mockSupabase;
+export default mockSupabase;

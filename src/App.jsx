@@ -6,6 +6,7 @@ import About from "./Section/about";
 import Navbar from "./Section/navbar";
 import { Projects } from "./pages/Projects";
 import { Teams } from "./pages/Teams";
+import EventSection from './sections/EventPage';
 
 export default function App() {
   return (
@@ -18,7 +19,9 @@ export default function App() {
               <Home />
               <Features />
               <About />
+              <EventSection />
               <ContactSection />
+           
             </>
           } />
           <Route path="/teams" element={<Teams />} />

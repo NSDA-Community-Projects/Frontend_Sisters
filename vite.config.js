@@ -1,19 +1,31 @@
-const { defineConfig } = require('vite');
-const react = require('@vitejs/plugin-react');
-const path = require('path');
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-module.exports = defineConfig({
+export default defineConfig({
+  root: __dirname,
+  publicDir: 'public',
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  css: {
-    postcss: './postcss.config.js',
-  },
   server: {
-    port: 3000,
+    port: 5173,
     open: true,
+    host: true,
+    strictPort: true,
+  },
+  preview: {
+    port: 5173,
+    open: true,
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: path.resolve(__dirname, 'index.html'),
+    },
   },
 });
