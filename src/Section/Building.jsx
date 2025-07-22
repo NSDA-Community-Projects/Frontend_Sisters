@@ -191,8 +191,8 @@ export default function OrganizationLayout() {
               </div>
               
               {/* Replace this div with your actual SVG component */}
-              <div className="w-full max-w-md mt-4">
-                <img src={buildingImage} alt="" className="w-full h-auto" />
+              <div className="w-full flex justify-center max-w-md mt-4">
+                <img src={buildingImage} alt="" className="w-48 h-48" />
                 
                 
                 </div>
