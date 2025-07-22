@@ -3,7 +3,7 @@ import {
   Instagram,
   Linkedin,
   Menu,
-  TwitterIcon as TikTok, // Renamed TwitterIcon to TikTok for clarity based on usage
+  TwitterIcon as TikTok, // Renamed for clarity
   Twitter,
   X,
 } from "lucide-react";
@@ -18,39 +18,40 @@ export default function Navbar() {
   // Close mobile menu when route or hash changes
   useEffect(() => {
     setIsOpen(false);
-  }, [location.pathname, location.hash]); // Listen to hash changes as well
+  }, [location.pathname, location.hash]);
 
   const closeMobileMenu = () => {
     setIsOpen(false);
   };
 
-  // Check if current path or hash matches the link
   const isActive = (path) => {
-    // For full path routes like /projects, /teams
-    if (path.startsWith('/')) {
-      return location.pathname === path ? 'text-blue-700' : 'text-[#023665]';
+    if (path === '/') {
+      return location.pathname === '/' ? 'text-blue-700' : 'text-[#023665]';
     }
-    // For hash links on the homepage
-    if (location.pathname === '/') {
-      return location.hash === path ? 'text-blue-700' : 'text-[#023665]';
+    if (path.startsWith('#')) {
+      return location.pathname === '/' && location.hash === path ? 'text-blue-700' : 'text-[#023665]';
     }
-    return 'text-[#023665]'; // Default color
+    return 'text-[#023665]';
   };
 
-  // Handle section navigation for links that are part of the homepage
   const handleSectionClick = (sectionId, e) => {
     e.preventDefault();
-    // Navigate to homepage first if not already there
+    closeMobileMenu();
+
     if (location.pathname !== '/') {
       navigate(`/#${sectionId}`);
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300); // Delay to wait for page transition
     } else {
-      // If already on homepage, scroll to the element
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    closeMobileMenu();
   };
 
   return (
@@ -58,16 +59,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center" onClick={closeMobileMenu}>
-          {/* Ensure the logo path is correct relative to your public folder */}
           <img src="/nsda-logo.png" alt="NSDA Logo" className="w-20 h-20" />
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-4 text-sm">
-          <Link
-            to="/"
-            className={`${isActive('/')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}
-          >
+          <Link to="/" className={`${isActive('/')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}>
             Home
           </Link>
           <a
@@ -77,20 +74,13 @@ export default function Navbar() {
           >
             About
           </a>
-          {/* Teams now uses Link to a dedicated route */}
-          <Link
-            to="/teams"
-            className={`${isActive('/teams')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}
+          <a
+            href="#teams"
+            onClick={(e) => handleSectionClick('teams', e)}
+            className={`${isActive('#teams')} font-medium hover:text-blue-700 px-3 py-2 transition-colors cursor-pointer`}
           >
             Teams
-          </Link>
-          {/* Projects now uses Link to a dedicated route */}
-          <Link
-            to="/projects"
-            className={`${isActive('/projects')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}
-          >
-            Projects
-          </Link>
+          </a>
           <a
             href="#events"
             onClick={(e) => handleSectionClick('events', e)}
@@ -98,43 +88,29 @@ export default function Navbar() {
           >
             Events
           </a>
-          {/* Uncomment if you have a Blogs section on the homepage */}
-          {/* <a
-            href="#blogs"
-            onClick={(e) => handleSectionClick('blogs', e)}
-            className={`${isActive('#blogs')} font-medium hover:text-blue-700 px-3 py-2 transition-colors cursor-pointer`}
-          >
-            Blogs
-          </a> */}
+          <Link to="/projects" className={`${isActive('/projects')} font-medium hover:text-blue-700 px-3 py-2 transition-colors`}>
+            Projects
+          </Link>
           <a
-            href="#contact" // Changed to #contact to match id in App.js
-            onClick={(e) => handleSectionClick('contact', e)} // Changed to contact
+            href="#contact"
+            onClick={(e) => handleSectionClick('contact', e)}
             className={`${isActive('#contact')} font-medium hover:text-blue-700 px-3 py-2 transition-colors cursor-pointer`}
           >
             Contact
           </a>
+          
         </div>
 
         {/* Social Icons */}
         <div className="hidden md:flex items-center space-x-4">
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-            <TikTok className="w-5 h-5" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-            <Instagram className="w-5 h-5" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-            <Facebook className="w-5 h-5" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-            <Twitter className="w-5 h-5" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-            <Linkedin className="w-5 h-5" />
-          </a>
+          <a href="#" className="text-[#023665] hover:text-blue-700"><TikTok className="w-5 h-5" /></a>
+          <a href="#" className="text-[#023665] hover:text-blue-700"><Instagram className="w-5 h-5" /></a>
+          <a href="#" className="text-[#023665] hover:text-blue-700"><Facebook className="w-5 h-5" /></a>
+          <a href="#" className="text-[#023665] hover:text-blue-700"><Twitter className="w-5 h-5" /></a>
+          <a href="#" className="text-[#023665] hover:text-blue-700"><Linkedin className="w-5 h-5" /></a>
         </div>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -146,59 +122,37 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-sm shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              to="/"
-              onClick={closeMobileMenu}
-              className={`${isActive('/')} block px-3 py-2 rounded-md text-base font-medium`}
-            >
+            <Link to="/" onClick={closeMobileMenu} className={`${isActive('/')} block px-3 py-2 rounded-md text-base font-medium`}>
               Home
             </Link>
             <a
               href="#about"
               onClick={(e) => handleSectionClick('about', e)}
-              className={`${isActive('#about')} block px-3 py-2 rounded-md text-base font-medium text-[#023665] hover:bg-gray-50 hover:text-blue-700`}
+              className={`${isActive('#about')} block px-3 py-2 rounded-md text-base font-medium hover:text-blue-700`}
             >
               About
             </a>
-            {/* Teams now uses Link to a dedicated route */}
-            <Link
-              to="/teams"
-              onClick={closeMobileMenu}
-              className={`${isActive('/teams')} block px-3 py-2 rounded-md text-base font-medium`}
-            >
+            <Link to="#teams" onClick={closeMobileMenu} className={`${isActive("#teams")} block px-3 py-2 rounded-md text-base font-medium`}>
               Teams
             </Link>
-            {/* Projects now uses Link to a dedicated route */}
-            <Link
-              to="/projects"
-              onClick={closeMobileMenu}
-              className={`${isActive('/projects')} block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50 hover:text-blue-700`}
-            >
+            <Link to="/projects" onClick={closeMobileMenu} className={`${isActive('/projects')} block px-3 py-2 rounded-md text-base font-medium hover:text-blue-700`}>
               Projects
             </Link>
             <a
               href="#events"
               onClick={(e) => handleSectionClick('events', e)}
-              className={`${isActive('#events')} block px-3 py-2 rounded-md text-base font-medium text-[#023665] hover:bg-gray-50 hover:text-blue-700 cursor-pointer`}
+              className={`${isActive('#events')} block px-3 py-2 rounded-md text-base font-medium hover:text-blue-700`}
             >
               Events
             </a>
-            {/* Uncomment if you have a Blogs section on the homepage */}
-            {/* <a
-              href="#blogs"
-              onClick={(e) => handleSectionClick('blogs', e)}
-              className={`${isActive('#blogs')} block px-3 py-2 rounded-md text-base font-medium text-[#023665] hover:bg-gray-50 hover:text-blue-700 cursor-pointer`}
-            >
-              Blogs
-            </a> */}
             <a
-              href="#contact" // Changed to #contact
-              onClick={(e) => handleSectionClick('contact', e)} // Changed to contact
-              className={`${isActive('#contact')} block px-3 py-2 rounded-md text-base font-medium text-[#023665] hover:bg-gray-50 hover:text-blue-700 cursor-pointer`}
+              href="#contact"
+              onClick={(e) => handleSectionClick('contact', e)}
+              className={`${isActive('#contact')} block px-3 py-2 rounded-md text-base font-medium hover:text-blue-700`}
             >
               Contact
             </a>
@@ -206,21 +160,11 @@ export default function Navbar() {
 
           {/* Mobile Social Icons */}
           <div className="flex items-center justify-center space-x-4 py-4 border-t border-gray-100">
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-              <TikTok className="w-5 h-5" />
-            </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-              <Facebook className="w-5 h-5" />
-            </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-              <Twitter className="w-5 h-5" />
-            </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#023665] hover:text-blue-700 transition-colors">
-              <Linkedin className="w-5 h-5" />
-            </a>
+            <a href="#" className="text-[#023665] hover:text-blue-700"><TikTok className="w-5 h-5" /></a>
+            <a href="#" className="text-[#023665] hover:text-blue-700"><Instagram className="w-5 h-5" /></a>
+            <a href="#" className="text-[#023665] hover:text-blue-700"><Facebook className="w-5 h-5" /></a>
+            <a href="#" className="text-[#023665] hover:text-blue-700"><Twitter className="w-5 h-5" /></a>
+            <a href="#" className="text-[#023665] hover:text-blue-700"><Linkedin className="w-5 h-5" /></a>
           </div>
         </div>
       )}
