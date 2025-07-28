@@ -1,0 +1,27 @@
+mv .env .env.example
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+dist
+build
+coverage
+.idea
+.vscode     
+*.swp
+*.swo
+*.swn
+*.orig
+*.bak
+*.tmp       
